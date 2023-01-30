@@ -82,6 +82,22 @@ Using only the below Postgresql tables, write a Postgresql query to <ENTER A DES
   - Give me all the customer names who had orders created in 2022
   - Show the top 5 product names that are most commonly purchased
   - What's the average amount of products in an order?
+
+For example:
+Query to chatGPT (using the example tables above):
+```
+Using only the below Postgresql tables, write a Postgresql query to give me the total price of the most recently created order.
+
+<PASTE IN THE SQL TABLES HERE>
+```
+
+Response from chatGPT:
+```sql
+SELECT SUM(price)
+FROM orders_products
+WHERE order_id = (SELECT id FROM orders ORDER BY created_at DESC LIMIT 1);
+```
+
 - chatGPT should return some SQL code. You can copy and paste the code in to your terminal, or an app like Redash that is connected to your database to execute the SQL query against real data. **IMPORTANT** MAKE SURE YOUR USING A READ-ONLY DATABASE TO BE SAFE! NEVER EXECUTE UNVERIFIED QUERIES AGAINST CRITICAL PRODUCTION ENVIRONMENTS WITHOUT SAFEGUARDS IN PLACE!
 - Keep tuning your queries and tables/columns you give chatGPT until you're happy with the queries you can make against your data. Remember, the more tables you include, the more questions you can answer. On the flip side, it makes it harder and more expensive for chatGPT to interpret.
 - Once happy, take your tables and convert them to a single string that we'll end up pasting in to our AWS Lambda function later. I accomplished this using Ruby:
@@ -92,6 +108,7 @@ file.read
 # You should get an escaped string that looks something like:
 # "user1\nuser2\nuser3\n"
 ```
+- Copy this tables string down, as we'll need it in our AWS Lambda function
 
 ## Create a AWS Lambda function to query openAI GPT
 [Amazon AWS Lambda](https://aws.amazon.com/lambda/) allows us to run code in the cloud on a serverless platform, making setup easy and reliable. We'll use this as a mechanism to write our code which will take a user prompt and ask openAI GPT to generate a SQL query.
