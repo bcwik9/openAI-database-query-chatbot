@@ -14,10 +14,10 @@ What you'll need:
 
 ## Overview
 - Use openAI chatGPT to tune our tables and queries
-- Create a AWS Lambda function that takes a prompt as an input, sends it to openAI, and parses the SQL response
-- Send the SQL query that openAI GPT gave us to the database which actually houses data, to get the actual data we want
-- Connect the AWS Lamda function to AWS Lex, a programmable chatbot so users have an interface in which to ask questions and get data
-- Integrate AWS Lex with Slack, so users can talk to the chatbot and query for data right through their familiar Slack app
+- Create a AWS Lex programmable chatbot so users have an interface in which to ask questions and get data responses
+- Create a AWS Lambda function that takes a prompt as an input, sends it to openAI, and executes the SQL response against our database
+- Connect our AWS Lambda function to the AWS Lex chatbot
+- Integrate the AWS Lex with Slack, so users can talk to the chatbot and query for data right through their familiar Slack messaging app
 
 ## Use chatGPT to tune our natural language database prompt
 This step can be a little bit time consuming, but a fun intro to the world of natural language SQL translation. Essentially we're going to give chatGPT an outline of our database schema, and then ask it a question to generate a SQL query we can run against the real database. Once we're happy with the results, we'll take the table data and create a single string that we'll send via API call.
@@ -141,6 +141,11 @@ TODO: Add steps to create Lex
   - replace the `table_data` var with the SQL table string we created before based on the chatGPT test runs
   - replace the `database_query_url` var with the URL of your web server which will execute the SQL against your database and format a response
   - replace the `intent_name` with the name of the AWS Lex intent we created before, which is how the user will initiate a query to the openAI and the database. something like "openAiQuery" will work
+
+## Connect the AWS Lambda function to AWS Lex
+We now need to tell AWS Lex to use the Lambda function we created to fulfill it's intent.
+
+TODO write steps
 
 ## Integrate AWS Lex with Slack
 Since most users don't have access to AWS Lex directly, we should give them easy access via a Slack app. This will let users make natural language queries directly from their messaging app, and use the power of chatGPT to quickly get answers from the database!
