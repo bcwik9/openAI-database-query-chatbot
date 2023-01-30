@@ -157,6 +157,7 @@ TODO write steps to integrate Lex with Slack
 - [List of openAI GPT models available for use](https://beta.openai.com/docs/models/overview)
   - There's general models, and "Codex" models specifically meant for generating code
 - [Examples of openAI GPT generating SQL queries from natural language prompts](https://beta.openai.com/examples/default-sql-translate)
+  - It seems the best way to specify a table/columns may be: `# Table albums, columns = [AlbumId, Title, ArtistId]`. See https://platform.openai.com/docs/guides/code/best-practices
 - [Redash](https://redash.io/) is a helpful app that lets you connect directly to databases and other data stores, create and save queries, and visualize data. It's helpful for taking the SQL that ChatGPT generates and testing it out, or creating graphs and charts to share or monitor.
 - [openAI AWS Lambda layer](https://github.com/erenyasarkurt/OpenAI-AWS-Lambda-Layer) is required to be able to use openAI GPT in a AWS Lambda function
 - [Working with files in Ruby](https://www.rubyguides.com/2015/05/working-with-files-ruby/) is a helpful guide to take a file of text, and convert it to a single string (which is helpful to pass a lot of table data as text to openAI GPT as a prompt)
