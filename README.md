@@ -19,9 +19,82 @@ What you'll need:
 - Connect the AWS Lamda function to AWS Lex, a programmable chatbot so users have an interface in which to ask questions and get data
 - Integrate AWS Lex with Slack, so users can talk to the chatbot and query for data right through their familiar Slack app
 
+## Use chatGPT to tune our natural language database prompt
+This step can be a little bit time consuming, but a fun intro to the world of natural language SQL translation. Essentially we're going to give chatGPT an outline of our database schema, and then ask it a question to generate a SQL query we can run against the real database. Once we're happy with the results, we'll take the table data and create a single string that we'll send via API call.
+
+- First create an account with openAI since we'll need to access chatGPT, and eventually API keys. You can create a free account at https://beta.openai.com/signup if you don't already have an account
+- Look at your database schema and choose tables and columns that you'll want to query on. Put them in a text file that we can easily copy. Use the example below as the format:
+```
+Table: orders
++-----------------+----------+
+Column Name = Type
++-----------------+----------+
+id = int
+created_at = datetime
+updated_at = datetime
+customer_id = int
++-----------------+----------+
+
+Table: products
++-----------------+----------+
+Column Name = Type
++-----------------+----------+
+id = int
+created_at = datetime
+updated_at = datetime
+description = text
+name = string
++-----------------+----------+
+
+Table: orders_products
++-----------------+----------+
+Column Name = Type
++-----------------+----------+
+id = int
+created_at = datetime
+updated_at = datetime
+order_id = int
+product_id = int
+price = decimal
++-----------------+----------+
+
+Table: users
++-----------------+----------+
+Column Name = Type
++-----------------+----------+
+id = int
+created_at = datetime
+updated_at = datetime
+first_name = string
+last_name = string
+email = string
+phone = string
+type = string
++-----------------+----------+
+```
+- open up chatGPT and paste the following in the chat box:
+```
+Using only the below Postgresql tables, write a Postgresql query to <ENTER A DESCRIPTION OF SOME DATA YOU WOULD LIKE TO RETRIEVE>.
+
+<PASTE IN YOUR SQL TABLES HERE>
+```
+- Some example queries to try:
+  - Give me all the customer names who had orders created in 2022
+  - Show the top 5 product names that are most commonly purchased
+  - What's the average amount of products in an order?
+- chatGPT should return some SQL code. You can copy and paste the code in to your terminal, or an app like Redash that is connected to your database to execute the SQL query against real data. **IMPORTANT** MAKE SURE YOUR USING A READ-ONLY DATABASE TO BE SAFE! NEVER EXECUTE UNVERIFIED QUERIES AGAINST CRITICAL PRODUCTION ENVIRONMENTS WITHOUT SAFEGUARDS IN PLACE!
+- Keep tuning your queries and tables/columns you give chatGPT until you're happy with the queries you can make against your data. Remember, the more tables you include, the more questions you can answer. On the flip side, it makes it harder and more expensive for chatGPT to interpret.
+- Once happy, take your tables and convert them to a single string that we'll end up pasting in to our AWS Lambda function later. I accomplished this using Ruby:
+```ruby
+file = File.open("YOUR_TABLES_FILE.txt")
+file.read
+
+# You should get an escaped string that looks something like:
+# "user1\nuser2\nuser3\n"
+```
+
 ## Create a AWS Lambda function to query openAI GPT
 [Amazon AWS Lambda](https://aws.amazon.com/lambda/) allows us to run code in the cloud on a serverless platform, making setup easy and reliable. We'll use this as a mechanism to write our code which will take a user prompt and ask openAI GPT to generate a SQL query.
-- First create an account with openAI since we'll need API keys from their site. You can create a free account at https://beta.openai.com/signup if you don't already have an account
 - Next, create an Amazon AWS account if you don't have one already. You can create an account at https://aws.amazon.com/
 - Before we create our AWS Lambda function, we'll need to download a Lambda layer environment that supports openAI. This will allow us to use the openAI functionality in our Lambda function. Head to https://github.com/erenyasarkurt/OpenAI-AWS-Lambda-Layer and download the latest release zip.
 - Now we'll add the layer we just downloaded to AWS. Go to the Amazon AWS web console home page. Find and click on the [AWS Lambda service](https://aws.amazon.com/lambda/)
