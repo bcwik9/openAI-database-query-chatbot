@@ -78,13 +78,14 @@ def lambda_handler(event, context):
     #    response_list.append(str(data))
     #final_response = "\n".join(response_list)
     
+    intent_name = "REPLACE WITH YOUR INTENT NAME"
     response = {
         "sessionState": {
             "dialogAction": {
                 "type": "Close"
             },
             "intent": {
-                "name": "openAiQuery",
+                "name": intent_name,
                 "state": "Fulfilled"
             }
         },
