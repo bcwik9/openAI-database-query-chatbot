@@ -1,5 +1,5 @@
 # Use natural language prompts to direct openAI GPT to create SQL queries and retrieve data in your database
-[openAI ChatGPT](https://chat.openai.com/chat) is an AI chatbot that has been in the news recently for it's popularity and functionality. This guide will allow you to leverage openAI GPT to generate SQL queries that we can run against a database to fetch data, simply by giving openAI GPT a description of the data we want to fetch. We'll then connect [Amazon AWS Lex](https://aws.amazon.com/lex/), another chatbot service, to a Slack app which will allow our end users to easily leverage the power of AI!
+[openAI ChatGPT](https://chat.openai.com/chat) is an AI chatbot that has been in the news recently for it's popularity and functionality. This guide will allow you to leverage openAI GPT to generate SQL queries that we can run against a database to fetch data, simply by giving openAI GPT a description of the data we want to fetch. chatGPT is awesome since it can infer relationships and other quirks about our SQL tables automatically! We'll then connect [Amazon AWS Lex](https://aws.amazon.com/lex/), another chatbot service, to a Slack app which will allow our end users to easily leverage the power of AI!
 
 Some technologies we'll use:
 - [openAI GPT-3](https://openai.com/api/): A powerful AI chatbot good at performing natural language tasks
