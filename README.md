@@ -41,7 +41,7 @@ What you'll need:
   - select Custom layers, and select the openAI layer we created before
   - select the latest version (there's probably only one option available)
   - click Add
-- For your function code, replace it with the code in the Lambda function file in this repo
+- For your function code, replace it with the code in the Lambda function file in this repo: [lambda_function.py](https://github.com/bcwik9/openAI-database-query-chatbot/blob/main/lambda_function.py)
   - be sure to replace the openAI API key with your key
   - replace the `table_data` var with the SQL table string we created before based on the chatGPT test runs
   - replace the `database_query_url` var with the URL of your web server which will execute the SQL against your database and format a response
