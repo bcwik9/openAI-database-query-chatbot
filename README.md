@@ -106,7 +106,7 @@ file = File.open("YOUR_TABLES_FILE.txt")
 file.read
 
 # You should get an escaped string that looks something like:
-# "user1\nuser2\nuser3\n"
+# "user1\nuser2\nuser3\n......"
 ```
 - Copy this tables string down, as we'll need it in our AWS Lambda function
 
