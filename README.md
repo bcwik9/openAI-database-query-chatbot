@@ -85,9 +85,11 @@ Using only the below Postgresql tables, write a Postgresql query to give me the 
 
 Response from chatGPT:
 ```sql
-SELECT SUM(price)
-FROM orders_products
-WHERE order_id = (SELECT id FROM orders ORDER BY created_at DESC LIMIT 1);
+SELECT SUM(p.Price) as TotalPrice
+FROM Orders o
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID
+WHERE o.OrderID = (SELECT MAX(OrderID) FROM Orders)
 ```
 
 - chatGPT should return some SQL code. You can copy and paste the code in to your terminal, or an app like Redash that is connected to your database to execute the SQL query against real data. **IMPORTANT** MAKE SURE YOUR USING A READ-ONLY DATABASE TO BE SAFE! NEVER EXECUTE UNVERIFIED QUERIES AGAINST CRITICAL PRODUCTION ENVIRONMENTS WITHOUT SAFEGUARDS IN PLACE!
