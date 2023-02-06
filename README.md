@@ -177,12 +177,24 @@ I've previously utilized a Rails server to handle this (example below):
 ## Connect the AWS Lambda function to AWS Lex
 We now need to tell AWS Lex to use the Lambda function we created to fulfill it's intent.
 
-TODO write steps
+- Go to AWS Lex
+- In the lefthand menu, select Bots and then the bot you created before
+- Click on intents, then click the "Test" button in the top left hand corner (press "Build" if you need to build the bot). It should pop open a chat window
+- Click on the Gear icon in the top right side of the chat window
+- Expand the "Lambda function" panel
+  - For the Source, select the Lambda function we created before
+  - For version, select the latest version
+  - Click the Save button at the bottom
+- Now you're ready to test your bot!
+  - Enter the phrase we created for the Lex utterance (in our example it's "Find data") and send it
+  - The bot should respond with our Slot prompt (in this example "What is your query?")
+  - Enter your SQL question (such as "give me the total price of the most recently created order")
+  - The bot should send your text over to the Lambda function we created, and show you actual data from your database!
 
 ## Integrate AWS Lex with Slack
 Since most users don't have access to AWS Lex directly, we should give them easy access via a Slack app. This will let users make natural language queries directly from their messaging app, and use the power of chatGPT to quickly get answers from the database!
 
-TODO write steps to integrate Lex with Slack
+[See the guide to integrating AWS Lex with Slack](https://docs.aws.amazon.com/lexv2/latest/dg/deploy-slack.html)
 
 ## Sources and references
 - [Use a AWS Lambda function in AWS Lex v2](https://docs.aws.amazon.com/lexv2/latest/dg/lambda.html)
