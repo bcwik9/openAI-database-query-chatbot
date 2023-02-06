@@ -108,7 +108,30 @@ file.read
 ## Create a AWS Lex chatbot
 [Amazon AWS Lex] is a chatbot service that we will use to ultimately let our users ask questions and get responses. AWS Lex will take our users question and send it over to a AWS Lambda function for processing, and then send the response back to the user.
 
-TODO: Add steps to create Lex
+- Go to Amazon Lex
+- Click "Create Bot" to create a new bot
+  - Select "Create a blank bot" for Creation Method
+  - Enter a name for the bot
+  - For IAM Permissions, click Create new role with basic permissions (unless you have an existing role)
+  - For COPPA select "No"
+  - Click Next
+  - On the next page, select a voice for the bot to use
+  - Click Done
+- If it didn't create a new intent for you, select Intents from the lefthand menu and click Add intent -> Add empty intent
+  - Scroll down to the "Intent details" section and enter a name for your intent, such as "SqlQuery". Write it down as we'll need this later
+  - Scroll down to the "Sample utterances" section, and add a phrase such as "Find data" or "Query SQL" or something that will let Lex know we're ready to perform a SQL query. Click "Add utterance"
+  - Scroll down to the "Slots" section and click "Add slot"
+    - Make sure the slot is required
+    - Enter a name such as "sql_query"
+    - Enter "AlphaNumeric" for the slot type
+    - For prompts, enter something like "What is your query?" to prompt the user the start entering their query
+  - Scroll down to the "Fulfillment" section
+    - Expand the "On successful fulfillment" panel and click "Advanced options"
+    - Under "Fulfillment Lambda code hook" make sure "Use a Lambda function for fulfillment" is checked
+    - Click the "Update options" button at the bottom to save
+  - Click on "Save intent" at the bottom
+- In the top right corner, click the Build button to build your bot. This will take a little bit on time.
+- Proceed to the next step
 
 ## Create a AWS Lambda function to query openAI GPT
 [Amazon AWS Lambda](https://aws.amazon.com/lambda/) allows us to run code in the cloud on a serverless platform, making setup easy and reliable. We'll use this as a mechanism to write our code which will take a user prompt and ask openAI GPT to generate a SQL query.
