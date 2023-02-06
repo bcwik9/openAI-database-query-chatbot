@@ -158,7 +158,7 @@ file.read
   - be sure to replace the openAI API key with your key
   - replace the `table_data` var with the SQL table string we created before based on the chatGPT test runs
   - replace the `database_query_url` var with the URL of your web server which will execute the SQL against your database and format a response
-  - replace the `intent_name` with the name of the AWS Lex intent we created before, which is how the user will initiate a query to the openAI and the database. something like "openAiQuery" will work
+  - replace the `intent_name` with the name of the AWS Lex intent we created before, which is how the user will initiate a query to the openAI and the database. We used "SqlQuery" as the example intent name before.
 
 ## Connect the AWS Lambda function to AWS Lex
 We now need to tell AWS Lex to use the Lambda function we created to fulfill it's intent.
