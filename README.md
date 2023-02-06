@@ -23,53 +23,45 @@ What you'll need:
 This step can be a little bit time consuming, but a fun intro to the world of natural language SQL translation. Essentially we're going to give chatGPT an outline of our database schema, and then ask it a question to generate a SQL query we can run against the real database. Once we're happy with the results, we'll take the table data and create a single string that we'll send via API call.
 
 - First create an account with openAI since we'll need to access chatGPT, and eventually API keys. You can create a free account at https://beta.openai.com/signup if you don't already have an account
-- Look at your database schema and choose tables and columns that you'll want to query on. Put them in a text file that we can easily copy. Use the example below as the format:
+- Look at your database schema and choose tables and columns that you'll want to query on. Put them in a text file that we can easily copy. I'm using https://www.w3schools.com/sql/trysql.asp?filename=trysql_asc as an example database/schema that we can query against. Use the example below as the format:
 ```
-Table: orders
+Table: Orders
 +-----------------+----------+
 Column Name = Type
 +-----------------+----------+
-id = int
-created_at = datetime
-updated_at = datetime
-customer_id = int
+OrderID	 = int
+OrderDate = datetime
+CustomerID = int
 +-----------------+----------+
 
-Table: products
+Table: Products
 +-----------------+----------+
 Column Name = Type
 +-----------------+----------+
-id = int
-created_at = datetime
-updated_at = datetime
-description = text
-name = string
+ProductID = int
+ProductName = string
+Price = decimal
 +-----------------+----------+
 
-Table: orders_products
+Table: OrderDetails
 +-----------------+----------+
 Column Name = Type
 +-----------------+----------+
-id = int
-created_at = datetime
-updated_at = datetime
-order_id = int
-product_id = int
-price = decimal
+OrderDetailID = int
+OrderID = int
+ProductID = int
 +-----------------+----------+
 
-Table: users
+Table: Customers
 +-----------------+----------+
 Column Name = Type
 +-----------------+----------+
-id = int
-created_at = datetime
-updated_at = datetime
-first_name = string
-last_name = string
-email = string
-phone = string
-type = string
+CustomerID = int
+ContactName = string
+Address = string
+City = string
+PostalCode = string
+Country = string
 +-----------------+----------+
 ```
 - open up chatGPT and paste the following in the chat box:
@@ -81,7 +73,7 @@ Using only the below Postgresql tables, write a Postgresql query to <ENTER A DES
 - Some example queries to try:
   - Give me all the customer names who had orders created in 2022
   - Show the top 5 product names that are most commonly purchased
-  - What's the average amount of products in an order?
+  - What's the average number of unique products in an order?
 
 For example:
 Query to chatGPT (using the example tables above):
@@ -99,6 +91,7 @@ WHERE order_id = (SELECT id FROM orders ORDER BY created_at DESC LIMIT 1);
 ```
 
 - chatGPT should return some SQL code. You can copy and paste the code in to your terminal, or an app like Redash that is connected to your database to execute the SQL query against real data. **IMPORTANT** MAKE SURE YOUR USING A READ-ONLY DATABASE TO BE SAFE! NEVER EXECUTE UNVERIFIED QUERIES AGAINST CRITICAL PRODUCTION ENVIRONMENTS WITHOUT SAFEGUARDS IN PLACE!
+  - If using the example database above, you can copy/paste the SQL in to the page at https://www.w3schools.com/sql/trysql.asp?filename=trysql_asc and run it to see results
 - Keep tuning your queries and tables/columns you give chatGPT until you're happy with the queries you can make against your data. Remember, the more tables you include, the more questions you can answer. On the flip side, it makes it harder and more expensive for chatGPT to interpret.
 - Once happy, take your tables and convert them to a single string that we'll end up pasting in to our AWS Lambda function later. I accomplished this using Ruby:
 ```ruby
