@@ -11,6 +11,7 @@ Some technologies we'll use:
 What you'll need:
 - SQL database with your data
 - A web server endpoint that takes a SQL query string, executes it against your database, and returns the results as JSON
+- An Amazon AWS account if you don't have one already. You can create an account at https://aws.amazon.com/
 
 ## Overview
 - Use openAI chatGPT to tune our tables and queries
@@ -133,9 +134,22 @@ file.read
 - In the top right corner, click the Build button to build your bot. This will take a little bit on time.
 - Proceed to the next step
 
-## Create a AWS Lambda function to query openAI GPT
+## Create a webhook to return actual results from your database
+**IMPORTANT** MAKE SURE YOUR USING A READ-ONLY DATABASE TO BE SAFE! NEVER EXECUTE UNVERIFIED QUERIES AGAINST CRITICAL PRODUCTION ENVIRONMENTS WITHOUT SAFEGUARDS IN PLACE!
+
+OpenAI GPT can't run actual SQL queries against your database (nor would you want it to for data privacy concerns). Instead, we need to take the suggested SQL query that openAI GPT gives us, and hand it off to our webserver (or whatever service you'd like to use) for running the SQL query and returning formatted results.
+
+How you decide to handle this is up to you. I typically run a rails server that I can authenticate queries from Lex using a basic key that's passed in as a param, and the webserver checks the key to make sure it's valid. If it isn't valid, then it just exits since it isn't a valid user requesting a query.
+
+I've previously utilized a Rails server to handle this (example below):
+- Create a new route/controller method that will take a SQL query as text, and a text auth key
+- Check the text auth key to make sure the key being passed in params matches what we expect. If it doesn't, ignore the request or throw and error
+- Once we verify the query is from a valid source, execute the SQL query
+- Format the results of the SQL query. In my case, I had the webserver generate a Google Sheets spreadsheet and save the URL of the spreadsheet
+- Return the results as JSON (in my case I returned a URL of the google spreadsheet)
+
+## Create a AWS Lambda function to query openAI GPT for SQL and send that SQL to your webserver for processing
 [Amazon AWS Lambda](https://aws.amazon.com/lambda/) allows us to run code in the cloud on a serverless platform, making setup easy and reliable. We'll use this as a mechanism to write our code which will take a user prompt and ask openAI GPT to generate a SQL query.
-- Next, create an Amazon AWS account if you don't have one already. You can create an account at https://aws.amazon.com/
 - Before we create our AWS Lambda function, we'll need to download a Lambda layer environment that supports openAI. This will allow us to use the openAI functionality in our Lambda function. Head to https://github.com/erenyasarkurt/OpenAI-AWS-Lambda-Layer and download the latest release zip.
 - Now we'll add the layer we just downloaded to AWS. Go to the Amazon AWS web console home page. Find and click on the [AWS Lambda service](https://aws.amazon.com/lambda/)
 - Click on Layers -> Create layer
