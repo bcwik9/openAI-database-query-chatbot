@@ -124,12 +124,22 @@ file.read
   - Scroll down to the "Slots" section and click "Add slot"
     - Make sure the slot is required
     - Enter a name such as "sql_query"
-    - Enter "AlphaNumeric" for the slot type
+    - Enter "FreeFormInput" for the slot type
     - For prompts, enter something like "What is your query?" to prompt the user the start entering their query
   - Scroll down to the "Fulfillment" section
     - Expand the "On successful fulfillment" panel and click "Advanced options"
     - Under "Fulfillment Lambda code hook" make sure "Use a Lambda function for fulfillment" is checked
     - Click the "Update options" button at the bottom to save
+  - Scroll back up to the "Initial response" section
+    - Click on "Advanced options"
+    - Find the "Dialog code hook" panel, and click "Lambda dialog code hook" to expand it
+    - Make sure "Invoke Lambda function" is checked
+    - Click "Advanced options"
+    - Find the "Success response" panel and click the "Set values" section to expand it
+    - Set "Next step in conversation" to "Elicit a slot"
+    - For the slot, select the slot we created before from the dropdown (in our example it's "sql_query")
+    - Click the "Update options" button at the bottom
+    - Click "Update options" again
   - Click on "Save intent" at the bottom
 - In the top right corner, click the Build button to build your bot. This will take a little bit on time.
 - Proceed to the next step
