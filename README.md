@@ -179,11 +179,34 @@ I've previously utilized a Rails server to handle this (example below):
   - select the latest version (there's probably only one option available)
   - click Add
 - For your function code, replace it with the code in the Lambda function file in this repo: [lambda_function.py](https://github.com/bcwik9/openAI-database-query-chatbot/blob/main/lambda_function.py)
-  - be sure to replace the openAI API key with your key
+  - repalce the `openai.api_key` var with your openAI API key
   - replace the `table_data` var with the SQL table string we created before based on the chatGPT test runs
   - replace the `database_query_url` var with the URL of your web server which will execute the SQL against your database and format a response
   - replace the `intent_name` with the name of the AWS Lex intent we created before, which is how the user will initiate a query to the openAI and the database. We used "SqlQuery" as the example intent name before.
-- TODO finish steps/testing
+- Click "Deploy" at the top to deploy your Lambda function for usage
+- Now let's create a new test to verify your lambda function is working properly. There should be a "Test" button at the top with a dropdown arrow. Select the dropdown and click "Configure test event"
+  - Select "Create new event"
+  - Enter a name for your event, such as "SimpleQuery"
+  - Select Private for "Event sharing settings"
+  - Use the below template for your test. It's essentially simulating a query in the format that Lex will give. You can change the "originalValue" text to a different test SQL query if you want:
+  - ```
+    {
+      "sessionState": {
+        "intent": {
+          "slots": {
+            "sql": {
+              "value": {
+                "originalValue": "find the top five customer names with the most number of orders"
+              }
+            }
+          }
+        }
+      }
+    }
+    ```
+  - Click Save at the bottom
+  - Now click the Test button again to run the test. You should see some output from what will be returned to the user.
+- Once you verify your Lambda function is working, move on to the next step
 
 ## Connect the AWS Lambda function to AWS Lex
 We now need to tell AWS Lex to use the Lambda function we created to fulfill it's intent.
