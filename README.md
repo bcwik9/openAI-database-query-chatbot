@@ -183,7 +183,12 @@ I've previously utilized a Rails server to handle this (example below):
   - replace the `table_data` var with the SQL table string we created before based on the chatGPT test runs
   - replace the `database_query_url` var with the URL of your web server which will execute the SQL against your database and format a response
   - replace the `intent_name` with the name of the AWS Lex intent we created before, which is how the user will initiate a query to the openAI and the database. We used "SqlQuery" as the example intent name before.
-- Click "Deploy" at the top to deploy your Lambda function for usage
+- Click the "Configuration" tab
+  - Click on "General Configuration"
+  - Click the Edit button
+  - Change the Timeout to something like 45 seconds. Otherwise the function will probably error out since it takes time for openAI GPT to formulate a response
+  - Click the Save button
+- Go back to the "Code"T tab and click "Deploy" at the top to deploy your Lambda function for usage
 - Now let's create a new test to verify your lambda function is working properly. There should be a "Test" button at the top with a dropdown arrow. Select the dropdown and click "Configure test event"
   - Select "Create new event"
   - Enter a name for your event, such as "SimpleQuery"
