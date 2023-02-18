@@ -12,6 +12,7 @@ What you'll need:
 - SQL database with your data
 - A web server endpoint that takes a SQL query string, executes it against your database, and returns the results as JSON
 - An Amazon AWS account if you don't have one already. You can create an account at https://aws.amazon.com/
+- An openAI account for GPT API keys. You can create an account at https://beta.openai.com/signup
 
 ## Overview
 - Use openAI chatGPT to tune our tables and queries
