@@ -108,7 +108,7 @@ file.read
 - Copy this tables string down, as we'll need it in our AWS Lambda function
 
 ## Create a AWS Lex chatbot
-[Amazon AWS Lex] is a chatbot service that we will use to ultimately let our users ask questions and get responses. AWS Lex will take our users question and send it over to a AWS Lambda function for processing, and then send the response back to the user.
+[Amazon AWS Lex](https://aws.amazon.com/lex/) is a chatbot service that we will use to ultimately let our users ask questions and get responses. AWS Lex will take our users question and send it over to a AWS Lambda function for processing, and then send the response back to the user.
 
 - Go to Amazon Lex
 - Click "Create Bot" to create a new bot
